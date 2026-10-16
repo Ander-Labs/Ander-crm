@@ -38,7 +38,7 @@
 1. Verify Better Auth identity/session persistence and audit writes against the migrated database.
 2. Configure `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `BOOTSTRAP_ADMIN_NAME`, `BOOTSTRAP_ADMIN_EMAIL`, `BOOTSTRAP_ADMIN_PASSWORD`, `BOOTSTRAP_WORKSPACE_NAME`, and `BOOTSTRAP_WORKSPACE_SLUG` in ignored local env; these values are currently absent. Then run the operator-only `pnpm auth:bootstrap` procedure. Public self-sign-up remains disabled.
 3. Run session E2E and cross-workspace/project integration checks. A build remains intentionally deferred per the user's instruction.
-4. Vercel deployment `dpl_9oPSWoUeC9meU1ARgrsGQ32q9RdA` passes compilation and TypeScript but fails prerendering `/`: the root page reads the request-bound session to choose an authentication redirect. The route now opts out of instant/static-shell validation with `instant = false`, keeping this request-dependent redirect blocking only on `/`.
+4. Vercel deployment `dpl_963GZwRWxqGwXdWtMLqwRochnnvv` passes compilation and TypeScript but fails prerendering `/login`: the login page reads the request-bound session to redirect already-authenticated users. The root page, login page, and authenticated dashboard layout now opt out of instant/static-shell validation with `instant = false`; this keeps session-based redirects and protection request-bound without weakening caching or authorization elsewhere.
 
 ## Rollback
 

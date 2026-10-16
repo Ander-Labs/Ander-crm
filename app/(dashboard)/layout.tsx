@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { SignOutButton } from "@/modules/identity/presentation/sign-out-button";
 import { identityComposition } from "@/composition/identity";
 
+export const instant = false;
+
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const principal = await identityComposition.sessions.getCurrentPrincipal();
   if (!principal) redirect("/login");

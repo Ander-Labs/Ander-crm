@@ -3,6 +3,8 @@ import { SignInForm } from "@/modules/identity/presentation/sign-in-form";
 import { identityComposition } from "@/composition/identity";
 import { isAuthConfigured } from "@/modules/identity/infrastructure/better-auth";
 
+export const instant = false;
+
 export default async function LoginPage() {
   const principal = await identityComposition.sessions.getCurrentPrincipal();
   if (principal) redirect("/dashboard");
