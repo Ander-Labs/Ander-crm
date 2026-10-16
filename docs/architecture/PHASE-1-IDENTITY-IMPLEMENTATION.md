@@ -38,7 +38,7 @@
 1. Verify Better Auth identity/session persistence and audit writes against the migrated database.
 2. Configure `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `BOOTSTRAP_ADMIN_NAME`, `BOOTSTRAP_ADMIN_EMAIL`, `BOOTSTRAP_ADMIN_PASSWORD`, `BOOTSTRAP_WORKSPACE_NAME`, and `BOOTSTRAP_WORKSPACE_SLUG` in ignored local env; these values are currently absent. Then run the operator-only `pnpm auth:bootstrap` procedure. Public self-sign-up remains disabled.
 3. Run session E2E and cross-workspace/project integration checks. A build remains intentionally deferred per the user's instruction.
-4. The last Vercel production deployment failed because the auth route explicitly exported `runtime = "nodejs"` while `cacheComponents` is enabled. That export has been removed; the route still uses the default Node.js runtime. The fix has not yet been deployed or verified on Vercel.
+4. Vercel deployment `dpl_9oPSWoUeC9meU1ARgrsGQ32q9RdA` passes compilation and TypeScript but fails prerendering `/`: the root page reads the request-bound session to choose an authentication redirect. The route now opts out of instant/static-shell validation with `instant = false`, keeping this request-dependent redirect blocking only on `/`.
 
 ## Rollback
 
