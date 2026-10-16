@@ -1,8 +1,6 @@
 import { toNextJsHandler } from "better-auth/next-js";
 import { getAuth } from "@/modules/identity/infrastructure/better-auth";
 
-export const runtime = "nodejs";
-
 async function handle(request: Request) {
   const handlers = toNextJsHandler(getAuth());
   const method = request.method.toUpperCase() as "GET" | "POST";

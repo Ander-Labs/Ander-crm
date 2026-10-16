@@ -5,7 +5,7 @@
 
 ## Scope delivered in code
 
-- Better Auth 1.7.7 uses the installed Drizzle adapter 1.7.7 with PostgreSQL, Better Auth-owned identity tables, email/password sessions, secure cookies for HTTPS, 12-hour session lifetime, and public sign-up disabled. Its Next.js adapter is exposed only through `/api/auth/[...all]` on the Node runtime.
+- Better Auth 1.7.7 uses the installed Drizzle adapter 1.7.7 with PostgreSQL, Better Auth-owned identity tables, email/password sessions, secure cookies for HTTPS, 12-hour session lifetime, and public sign-up disabled. Its Next.js adapter is exposed only through `/api/auth/[...all]`; it uses Next.js's default Node.js runtime. An explicit route `runtime` export is omitted because Cache Components disallows route-segment config exports.
 - Server Components obtain a principal from Better Auth session headers. The login route, dashboard route group, and logout action use that provider. App Router implementation follows the installed Next.js 16.4 route/layout docs; authentication at the shell does not replace authorization in application code.
 - Workspace and project memberships are separate from Better Auth identity. Project membership references both `(workspace_id, project_id)` and `(workspace_id, workspace_membership_id)` so PostgreSQL rejects cross-workspace membership rows.
 - A private `auth:bootstrap` CLI creates the initial internal account through Better Auth's official admin `createUser` API and assigns workspace owner membership. The admin plugin exists only in that CLI composition; it is not registered on the web auth handler. Workspace/project role changes and project creation are application use cases, with the mutation and success audit record written in the same Drizzle transaction.
@@ -38,6 +38,7 @@
 1. Verify Better Auth identity/session persistence and audit writes against the migrated database.
 2. Configure `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `BOOTSTRAP_ADMIN_NAME`, `BOOTSTRAP_ADMIN_EMAIL`, `BOOTSTRAP_ADMIN_PASSWORD`, `BOOTSTRAP_WORKSPACE_NAME`, and `BOOTSTRAP_WORKSPACE_SLUG` in ignored local env; these values are currently absent. Then run the operator-only `pnpm auth:bootstrap` procedure. Public self-sign-up remains disabled.
 3. Run session E2E and cross-workspace/project integration checks. A build remains intentionally deferred per the user's instruction.
+4. The last Vercel production deployment failed because the auth route explicitly exported `runtime = "nodejs"` while `cacheComponents` is enabled. That export has been removed; the route still uses the default Node.js runtime. The fix has not yet been deployed or verified on Vercel.
 
 ## Rollback
 
