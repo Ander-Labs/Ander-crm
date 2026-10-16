@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
+import { dash } from "@better-auth/infra";
 import { authSchema } from "@/modules/identity/infrastructure/persistence/schema";
 import { getDatabase } from "@/shared/infrastructure/database";
 
@@ -36,6 +37,7 @@ function createAuth() {
       updateAge: 60 * 60,
       cookieCache: { enabled: false },
     },
+    plugins: [dash({ apiKey: process.env.BETTER_AUTH_API_KEY })],
   });
 }
 
